@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TxtReader</string>
+
+
+    <string name="goBack">上一级目录</string>
+    <string name="goHome">主目录</string>
 </resources>

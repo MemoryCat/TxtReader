@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="plugins/jquerymobile/jquery.mobile-1.4.5.css" />
+    <script src="plugins/jquerymobile/demos/js/jquery.js"></script>
+    <script src="plugins/jquerymobile/jquery.mobile-1.4.5.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#btn_testSpeaker").click(function(){
+                   console.info("aaaaaaaaaaaaaaaaaa");
+                    window.aui.playText("hello你好吗");
+            });
+        });
+    </script>
+</head>
+<body>
+
+<div data-role="page">
+    <div data-role="header">
+        <h1>标题</h1>
+    </div>
+
+    <div data-role="content">
+        <p>使用html5做android ui！</p>
+
+        <button id="btn_addLocalBook" onclick=" window.aui.addLocalBook();">添加本地书库</button>
+        <button onclick="console.info('aaaaaaaaaaaaaaaa');">日志</button>
+        <button id="btn_testSpeaker">测试语音</button>
+    </div>
+
+
+</div>
+</body>
+</html>
