@@ -1,19 +1,22 @@
-package com.memorycat.app.txtreader;
+package com.memorycat.app.txtreader.reading;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.memorycat.app.txtreader.R;
+import com.memorycat.app.txtreader.book.Book;
 import com.memorycat.app.txtreader.file.FileDialogFragment;
-import com.memorycat.app.txtreader.main.HtmlUIInteraction;
-import com.memorycat.app.txtreader.main.MainWebChromeClient;
 import com.memorycat.app.txtreader.speaker.SpeakerFactory;
 import com.memorycat.app.txtreader.speaker.TextSpeaker;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class ReadingActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button btn1;
     private TextSpeaker textSpeaker;
@@ -21,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private HtmlUIInteraction htmlUIInteraction;
     private MainWebChromeClient mainWebChromeClient;
 
-    public MainActivity(){
+    public ReadingActivity(){
     }
 
 
@@ -34,12 +37,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.webView.getSettings().setJavaScriptEnabled(true);
         this.mainWebChromeClient = new MainWebChromeClient();
         this.webView.setWebChromeClient(this.mainWebChromeClient);
-        this.htmlUIInteraction = new HtmlUIInteraction(this,this.textSpeaker);
+
+        Intent intent = super.getIntent();
+        Book book = (Book) intent.getSerializableExtra("book");
+        this.htmlUIInteraction = new HtmlUIInteraction(book,this,this.textSpeaker);
 
 
         setContentView(this.webView);
         this.webView.loadUrl("file:///android_asset/main/index.html");
         this.webView.addJavascriptInterface(this.htmlUIInteraction,"aui");
+        this.webView.evaluateJavascript("1+2", new ValueCallback<String>() {
+            @Override
+            public void onReceiveValue(String value) {
+                Toast.makeText(ReadingActivity.this, "acjs:"+value, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

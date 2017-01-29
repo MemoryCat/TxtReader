@@ -17,8 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.memorycat.app.txtreader.R;
+import com.memorycat.app.txtreader.book.Book;
+import com.memorycat.app.txtreader.book.BookSQLHelper;
 
 import java.io.File;
+import java.util.Date;
 
 /**
  * Created by xie on 2017/1/24.
@@ -102,6 +105,15 @@ public class FileDialogFragment extends DialogFragment implements View.OnClickLi
 //            bookshelfSqliteHelper.add(bookshelfEntity);
 //            bookshelfSqliteHelper.close();
 
+            Book book = new Book();
+            book.setFilePath(file.getAbsolutePath());
+            book.setAddDate(new Date());
+            book.setBookName(file.getName());
+            book.setLastReadDate(book.getAddDate());
+//            book.setBookContent(FileUtil.loadFileToString(file));
+            book.setBookContent("");
+            BookSQLHelper bookSQLHelper = new BookSQLHelper(super.getActivity());
+            bookSQLHelper.add(book);
 
             Toast.makeText(super.getActivity(), "已添加到书架：" + file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
             String s = FileUtil.loadFileToString(file);

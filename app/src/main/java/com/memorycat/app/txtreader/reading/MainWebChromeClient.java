@@ -1,4 +1,4 @@
-package com.memorycat.app.txtreader.main;
+package com.memorycat.app.txtreader.reading;
 
 import android.util.Log;
 import android.webkit.ConsoleMessage;

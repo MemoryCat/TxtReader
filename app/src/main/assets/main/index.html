@@ -10,6 +10,13 @@
                    console.info("aaaaaaaaaaaaaaaaaa");
                     window.aui.playText("hello你好吗");
             });
+
+            (function(){//加载书本内容
+                var book= window.aui.getBookJson();
+                book=eval("("+book+")");
+                console.info(book)
+                $("#divOutput").html(book.bookContent);
+            })();
         });
     </script>
 </head>
@@ -24,8 +31,13 @@
         <p>使用html5做android ui！</p>
 
         <button id="btn_addLocalBook" onclick=" window.aui.addLocalBook();">添加本地书库</button>
+        <button id="btn_getBooks" >查看书库</button>
         <button onclick="console.info('aaaaaaaaaaaaaaaa');">日志</button>
         <button id="btn_testSpeaker">测试语音</button>
+
+
+        <div id="divOutput" style="overflow:scroll">aaaaaa</div>
+        ++++++++++++++++++++++++++++
     </div>
 
 

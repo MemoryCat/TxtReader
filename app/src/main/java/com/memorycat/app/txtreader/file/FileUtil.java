@@ -14,6 +14,9 @@ public class FileUtil {
     public static String loadFileToString(File file) {
         StringBuffer ret = new StringBuffer();
         if (file.exists() && file.length() > 0) {
+//            if(file.length()>1024 * 1000 * 10){
+//                return "文件内容过大！限制在10m以内！";
+//            }
             try {
 
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), testFileCharset(file)));
