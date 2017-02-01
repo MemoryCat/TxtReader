@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -11,10 +12,10 @@ import android.widget.ListView;
 
 import com.memorycat.app.txtreader.R;
 import com.memorycat.app.txtreader.file.FileDialogFragment;
-import com.memorycat.app.txtreader.reading.ReadingActivity;
+import com.memorycat.app.txtreader.reading.Reading2Activity;
 
 public class BookActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
-
+    private static final String TAG = "BookActivity";
     private ListView booksListView;
     private BookCursorAdapter bookCursorAdapter;
     private BookSQLHelper bookSQLHelper;
@@ -50,9 +51,11 @@ public class BookActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "onItemClick() called with: parent = [" + parent + "], view = [" + view + "], position = [" + position + "], id = [" + id + "]");
         Book book = (Book) view.getTag();
+        Log.d(TAG, "onItemClick: "+book);
 //        book.setBookContent(FileUtil.loadFileToString(new File(book.getFilePath())));
-        Intent intent = new Intent(this, ReadingActivity.class);
+        Intent intent = new Intent(this, Reading2Activity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("book", book);
         intent.putExtras(bundle);

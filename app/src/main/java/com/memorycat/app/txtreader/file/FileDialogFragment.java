@@ -96,14 +96,6 @@ public class FileDialogFragment extends DialogFragment implements View.OnClickLi
 
         File file = (File) textViewFileName.getTag();
         if ("file".equals(imageViewFileType.getTag())) {
-//            BookshelfEntity bookshelfEntity = new BookshelfEntity();
-//            bookshelfEntity.setFilePath(file.getAbsolutePath());
-//            bookshelfEntity.setBookName(file.getName());
-//            bookshelfEntity.setLastReadPosition(0L);
-//
-//            BookshelfSqliteHelper bookshelfSqliteHelper = new BookshelfSqliteHelper(super.getContext());
-//            bookshelfSqliteHelper.add(bookshelfEntity);
-//            bookshelfSqliteHelper.close();
 
             Book book = new Book();
             book.setFilePath(file.getAbsolutePath());

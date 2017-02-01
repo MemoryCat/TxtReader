@@ -1,17 +1,13 @@
 package com.memorycat.app.txtreader.speaker.xunfeiyuji;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.SpeechConstant;
-import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SpeechUtility;
-import com.iflytek.cloud.SynthesizerListener;
 import com.memorycat.app.txtreader.speaker.TextSpeaker;
 
 import java.io.Serializable;
@@ -21,13 +17,14 @@ import java.io.Serializable;
  * Created by xie on 2016/10/5.
  */
 
-public class Speaker implements TextSpeaker, InitListener,Serializable {
-    private static final String TAG = "Speaker";
+public class Speaker implements TextSpeaker, InitListener, Serializable {
     public static final String SPEECHUTILITY_INIT_PARAMETER = "appid=57f3bcc6";
+    private static final String TAG = "Speaker";
     protected Context context = null;
-    private boolean hasInitialized = false;
     protected SpeechUtility speechUtility;
     protected SpeechSynthesizer speechSynthesizer;
+    private boolean hasInitialized = false;
+
 
     public Speaker(Context context) {
         this.context = context;
@@ -73,10 +70,18 @@ public class Speaker implements TextSpeaker, InitListener,Serializable {
     }
 
     @Override
-    public void play(String text) {
+    public synchronized void play(String text) {
+        this.stop();
         Log.d(TAG, "play() called with: text = [" + text + "]");
         if (text != null && text.length() > 0) {
-            this.speechSynthesizer.startSpeaking(text, null);
+            try {
+                Log.d(TAG, "play: 开始播放");
+                this.speechSynthesizer.startSpeaking(text,null);
+                for (Thread.sleep(10);  this.speechSynthesizer.isSpeaking(); Thread.sleep(50));
+                Log.d(TAG, "play: 结束播放");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

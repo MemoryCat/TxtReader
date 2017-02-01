@@ -13,7 +13,7 @@ public class Book implements Serializable {
     private String bookContent;
     private String author;
     private Date addDate;
-    private long positionPointer;//阅读指针，阅读到哪个位置了？
+    private int positionPointer;//阅读指针，阅读到哪个位置了？
     private String filePath;
     private Date lastReadDate;
 
@@ -115,11 +115,11 @@ public class Book implements Serializable {
         this.addDate = addDate;
     }
 
-    public long getPositionPointer() {
+    public int getPositionPointer() {
         return positionPointer;
     }
 
-    public void setPositionPointer(long positionPointer) {
+    public void setPositionPointer(int positionPointer) {
         this.positionPointer = positionPointer;
     }
 

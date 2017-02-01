@@ -6,17 +6,58 @@
     <script src="plugins/jquerymobile/jquery.mobile-1.4.5.min.js"></script>
     <script>
         $(document).ready(function(){
-            $("#btn_testSpeaker").click(function(){
-                   console.info("aaaaaaaaaaaaaaaaaa");
-                    window.aui.playText("hello你好吗");
-            });
 
-            (function(){//加载书本内容
+
+
+
                 var book= window.aui.getBookJson();
                 book=eval("("+book+")");
-                console.info(book)
-                $("#divOutput").html(book.bookContent);
-            })();
+                $("#bookTitle").text(book.bookName);
+                $("#bookContent").html(book.bookContent);
+
+                var fileContent=new String(book.bookContent);
+
+
+
+                function getNextSentence(text,startIndex){
+                	var s=new String(text);
+                	var retString="";
+                	for(var retIndex=1,i=startIndex;i<s.length;i++,retIndex++){
+                		var c=s.charAt(i);
+                		retString+=c;
+                		if(c=='。'
+                			||c=='.'
+                			||c=='\n'
+                			||c=='？'
+                			||c=='?'
+                			||c=='!'
+                			||c=='！'
+                			||retIndex>=1000){
+                			return {
+                                str:retString,
+                                length:retIndex
+                			};
+                			 
+                		}
+                	}
+                	return {
+                		 str:text,
+                         length:s.length
+                	}
+
+                }
+
+
+                var currentIndex=0;
+                $("#btn").click(function(){
+                	var beginStringIndex=currentIndex;
+                	var o=getNextSentence(fileContent,currentIndex);
+                	currentIndex+=o.length;
+                	console.info("字符串:"+o.str+"长度："+o.length+"当前"+currentIndex);
+                	$("#bookContent").html(fileContent.substr(0,beginStringIndex)+"<b>"+ o.str +"</b>"+fileContent.substr(currentIndex)  );
+                });
+
+
         });
     </script>
 </head>
@@ -24,23 +65,13 @@
 
 <div data-role="page">
     <div data-role="header">
-        <h1>标题</h1>
+        <h1 id="bookTitle">标题</h1>
     </div>
-
     <div data-role="content">
-        <p>使用html5做android ui！</p>
+        <Button id="btn">测试</Button>
 
-        <button id="btn_addLocalBook" onclick=" window.aui.addLocalBook();">添加本地书库</button>
-        <button id="btn_getBooks" >查看书库</button>
-        <button onclick="console.info('aaaaaaaaaaaaaaaa');">日志</button>
-        <button id="btn_testSpeaker">测试语音</button>
-
-
-        <div id="divOutput" style="overflow:scroll">aaaaaa</div>
-        ++++++++++++++++++++++++++++
+        <pre id="bookContent" style="overflow:scroll">aaaaaa</pre>
     </div>
-
-
 </div>
 </body>
 </html>

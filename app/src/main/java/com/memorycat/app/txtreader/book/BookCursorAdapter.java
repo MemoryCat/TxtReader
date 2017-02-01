@@ -32,19 +32,19 @@ public class BookCursorAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         View view = layoutInflater.inflate(R.layout.fragment_book_item, parent, false);
-        Book book = BookSQLHelper.getBookFromCursor(cursor);
-        view.setTag(book);
-        setBookItemView(view, book);
+        setBookItemView(view,cursor);
         return view;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        setBookItemView(view, BookSQLHelper.getBookFromCursor(cursor));
+        setBookItemView(view,cursor);
     }
 
 
-    private void setBookItemView(View view, Book book) {
+    private void setBookItemView(View view, Cursor cursor) {
+        Book book = BookSQLHelper.getBookFromCursor(cursor);
+        view.setTag(book);
         TextView textViewBookName = (TextView) view.findViewById(R.id.fragmentbook_textViewBookName);
         textViewBookName.setText(book.getBookName());
         TextView textViewLastReadDate = (TextView) view.findViewById(R.id.fragmentbook_textViewLastReadDate);
@@ -57,6 +57,6 @@ public class BookCursorAdapter extends CursorAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        textViewPosition.setText("大小:"+file.length()+"   进度:" + position + "%");
+        textViewPosition.setText("   大小:"+file.length()+"   进度:" + position + "%");
     }
 }

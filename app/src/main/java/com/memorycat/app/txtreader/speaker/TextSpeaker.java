@@ -10,6 +10,10 @@ package com.memorycat.app.txtreader.speaker;
 public interface TextSpeaker {
     boolean init();
 
+    /**
+     * 同步堵塞播放，即播放完该方法才返回。
+     * @param text
+     */
     void play(String text);//播放文字
 
     boolean isPalying();//是否正在播放

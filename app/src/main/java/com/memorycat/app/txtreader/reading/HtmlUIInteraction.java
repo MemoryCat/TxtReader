@@ -2,6 +2,7 @@ package com.memorycat.app.txtreader.reading;
 
 import android.app.Activity;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,11 +24,13 @@ public class HtmlUIInteraction {
     private Activity activity;
     private TextSpeaker textSpeaker;
     private Book book;
+    private WebView webView;
 
-    public HtmlUIInteraction(Book book, Activity activity, TextSpeaker textSpeaker) {
+    public HtmlUIInteraction(WebView webView ,Book book, Activity activity, TextSpeaker textSpeaker) {
         this.activity = activity;
         this.textSpeaker = textSpeaker;
         this.book = book;
+        this.webView=webView;
     }
 
     @JavascriptInterface

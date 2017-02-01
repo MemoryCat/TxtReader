@@ -50,7 +50,7 @@ public class BookSQLHelper extends SQLiteOpenHelper implements Serializable {
         book.setBookContent(cursor.getString(1));
         book.setBookName(cursor.getString(2));
         book.setAuthor(cursor.getString(3));
-        book.setPositionPointer(cursor.getLong(5));
+        book.setPositionPointer(cursor.getInt(5));
         book.setFilePath(cursor.getString(6));
         try {
             book.setAddDate(BookSQLHelper.simpleDateFormat.parse(cursor.getString(4)));
