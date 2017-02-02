@@ -11,7 +11,10 @@ public interface TextSpeaker {
     boolean init();
 
     /**
-     * 同步堵塞播放，即播放完该方法才返回。
+     * 异步播放，一调用完这个方法就立刻返回，并在后台播放。
+     *
+     * 如果要接收播放完的事件请添加
+     * @see  TextSpeaker#addTextPlayCompletedListener
      * @param text
      */
     void play(String text);//播放文字
@@ -24,4 +27,6 @@ public interface TextSpeaker {
 
     void resume();//继续播放
 
+    void addTextPlayCompletedListener(TextPlayCompletedListener textPlayCompletedListener );
+    void removeTextPlayCompletedListener(TextPlayCompletedListener textPlayCompletedListener );
 }

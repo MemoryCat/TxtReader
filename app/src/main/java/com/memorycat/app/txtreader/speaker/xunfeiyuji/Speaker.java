@@ -1,16 +1,23 @@
 package com.memorycat.app.txtreader.speaker.xunfeiyuji;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SpeechUtility;
+import com.iflytek.cloud.SynthesizerListener;
+import com.memorycat.app.txtreader.speaker.TextPlayCompletedListener;
 import com.memorycat.app.txtreader.speaker.TextSpeaker;
+import com.memorycat.app.txtreader.speaker.TextSpeakerEvent;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -24,6 +31,7 @@ public class Speaker implements TextSpeaker, InitListener, Serializable {
     protected SpeechUtility speechUtility;
     protected SpeechSynthesizer speechSynthesizer;
     private boolean hasInitialized = false;
+    private List<TextPlayCompletedListener> textPlayCompletedListeners = new LinkedList<TextPlayCompletedListener>();
 
 
     public Speaker(Context context) {
@@ -73,15 +81,43 @@ public class Speaker implements TextSpeaker, InitListener, Serializable {
     public synchronized void play(String text) {
         this.stop();
         Log.d(TAG, "play() called with: text = [" + text + "]");
+
         if (text != null && text.length() > 0) {
-            try {
-                Log.d(TAG, "play: 开始播放");
-                this.speechSynthesizer.startSpeaking(text,null);
-                for (Thread.sleep(10);  this.speechSynthesizer.isSpeaking(); Thread.sleep(50));
-                Log.d(TAG, "play: 结束播放");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            final String _text=text;
+            this.speechSynthesizer.startSpeaking(text, new SynthesizerListener() {
+                @Override
+                public void onSpeakBegin() {
+                }
+
+                @Override
+                public void onBufferProgress(int i, int i1, int i2, String s) {
+                }
+
+                @Override
+                public void onSpeakPaused() {
+                }
+
+                @Override
+                public void onSpeakResumed() {
+                }
+
+                @Override
+                public void onSpeakProgress(int i, int i1, int i2) {
+                }
+
+                @Override
+                public void onCompleted(SpeechError speechError) {
+                    for(int i=0;i<textPlayCompletedListeners.size();i++){
+                        TextPlayCompletedListener textPlayCompletedListener = textPlayCompletedListeners.get(i);
+                        textPlayCompletedListener.afterPlay(new TextSpeakerEvent(_text,_text));
+                    }
+                }
+                @Override
+                public void onEvent(int i, int i1, int i2, Bundle bundle) {
+                }
+            });
+
+
         }
     }
 
@@ -103,6 +139,16 @@ public class Speaker implements TextSpeaker, InitListener, Serializable {
     @Override
     public void resume() {
         this.speechSynthesizer.resumeSpeaking();
+    }
+
+    @Override
+    public void addTextPlayCompletedListener(TextPlayCompletedListener textPlayCompletedListener) {
+        this.textPlayCompletedListeners.add(textPlayCompletedListener);
+    }
+
+    @Override
+    public void removeTextPlayCompletedListener(TextPlayCompletedListener textPlayCompletedListener) {
+        this.textPlayCompletedListeners.remove(textPlayCompletedListener);
     }
 
 
