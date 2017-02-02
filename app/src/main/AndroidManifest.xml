@@ -42,12 +42,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".reading.Reading2Activity" />
+        <activity
+            android:name=".reading.Reading2Activity"
+            android:parentActivityName=".book.BookActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".book.BookActivity" />
+        </activity>
 
         <service
             android:name=".service.TextPlayingService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity
+            android:name=".file.SelectFileActivity"
+            android:parentActivityName=".book.BookActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".book.BookActivity" />
+        </activity>
     </application>
 
 </manifest>

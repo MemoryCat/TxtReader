@@ -46,7 +46,7 @@ public class BookSQLHelper extends SQLiteOpenHelper implements Serializable {
 
     public static Book getBookFromCursor(Cursor cursor) {
         Book book = new Book();
-        book.setId(cursor.getLong(0));
+        book.setId(cursor.getInt(0));
         book.setBookContent(cursor.getString(1));
         book.setBookName(cursor.getString(2));
         book.setAuthor(cursor.getString(3));
@@ -88,10 +88,14 @@ public class BookSQLHelper extends SQLiteOpenHelper implements Serializable {
         writableDatabase.close();
     }
 
+    public Cursor getAllBookCursor(){
+        return super.getReadableDatabase().rawQuery("select * from " + TABLE_NAME + " order by lastReadDate desc", null);
+    }
+
     public List<Book> getAllBooks() {
         List<Book> ret = new LinkedList<Book>();
         SQLiteDatabase readableDatabase = super.getReadableDatabase();
-        Cursor cursor = readableDatabase.rawQuery("select * from " + TABLE_NAME, null);
+        Cursor cursor = readableDatabase.rawQuery("select * from " + TABLE_NAME +" order by lastReadDate desc", null);
         if (cursor != null && cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 ret.add(BookSQLHelper.getBookFromCursor(cursor));
@@ -99,6 +103,15 @@ public class BookSQLHelper extends SQLiteOpenHelper implements Serializable {
         }
         return ret;
     }
+
+    public void updateReadBookProgress(int bookId,int progress){
+        SQLiteDatabase writableDatabase = super.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("positionPointer",progress);
+        writableDatabase.update(TABLE_NAME, contentValues, " _id =? ", new String[]{"" + bookId});
+        writableDatabase.close();
+    }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {

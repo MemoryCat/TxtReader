@@ -12,17 +12,20 @@ public class ReadingBook implements Serializable, Reading {
     private Book book;
     private int pageSize = 100;
     private String readingContent=new String();
+    private BookSQLHelper bookSQLHelper;
 
-    public ReadingBook(Book book) {
+    public ReadingBook(Book book,BookSQLHelper bookSQLHelper) {
         this.book=book;
         if(book==null){
             throw new NullPointerException("必须传入Book且能为null");
         }
+        this.bookSQLHelper=bookSQLHelper;
 
 
         int positionPointer = this.book.getPositionPointer();
+        int endIndex=positionPointer+pageSize>this.book.getBookContent().length()?this.book.getBookContent().length():positionPointer+this.pageSize;
         if(positionPointer<this.book.getBookContent().length()){
-            this.readingContent = this.book.getBookContent().substring(positionPointer, this.pageSize);
+            this.readingContent = this.book.getBookContent().substring(positionPointer,endIndex);
         }else{
             previousPage();
         }
@@ -38,9 +41,13 @@ public class ReadingBook implements Serializable, Reading {
             return false;
         }
         this.book.setPositionPointer(newPositionPointer);
-//        Log.d(TAG, "nextPage: "+"abcdefghijkl".substring(2,4));
-        this.setReadingContent(this.book.getBookContent().substring(newPositionPointer, newPositionPointer+this.pageSize));
-        //TODO 保存阅读进度指针
+        int endIndex=newPositionPointer+pageSize>this.book.getBookContent().length()?this.book.getBookContent().length():newPositionPointer+this.pageSize;
+        this.setReadingContent(this.book.getBookContent().substring(newPositionPointer, endIndex));
+        //保存阅读进度指针
+        if(this.bookSQLHelper!=null){
+            this.bookSQLHelper.updateReadBookProgress(this.book.getId(),newPositionPointer);
+        }
+
         return true;
     }
 
@@ -54,8 +61,12 @@ public class ReadingBook implements Serializable, Reading {
         }
 
         this.book.setPositionPointer(newPositionPointer);
-        this.setReadingContent(this.book.getBookContent().substring(newPositionPointer, newPositionPointer+this.pageSize));
-        //TODO 保存阅读进度指针
+        int endIndex=newPositionPointer<=0?0:newPositionPointer+this.pageSize;
+        this.setReadingContent(this.book.getBookContent().substring(newPositionPointer,endIndex));
+        //保存阅读进度指针
+        if(this.bookSQLHelper!=null){
+            this.bookSQLHelper.updateReadBookProgress(this.book.getId(),newPositionPointer);
+        }
         return true;
     }
 

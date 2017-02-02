@@ -17,7 +17,7 @@ import com.memorycat.app.txtreader.speaker.SpeakerFactory;
 import com.memorycat.app.txtreader.speaker.TextSpeaker;
 
 import java.io.File;
-
+@Deprecated
 public class ReadingActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button btn1;

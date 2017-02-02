@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.memorycat.app.txtreader.R;
 import com.memorycat.app.txtreader.book.Book;
+import com.memorycat.app.txtreader.book.BookSQLHelper;
 import com.memorycat.app.txtreader.book.ReadingBook;
 import com.memorycat.app.txtreader.file.FileUtil;
 import com.memorycat.app.txtreader.service.TextPlayingService;
@@ -75,7 +77,7 @@ public class Reading2Activity extends AppCompatActivity implements View.OnClickL
         Intent intent = super.getIntent();
         this.book = (Book) intent.getSerializableExtra("book");
         this.book.setBookContent(FileUtil.loadFileToString(new File(this.book.getFilePath())));
-        this.readingBook = new ReadingBook(this.book);
+        this.readingBook = new ReadingBook(this.book,new BookSQLHelper(this));
 
         this.readingArea = (TextView) findViewById(R.id.ra2_tw_readingArea);
         this.readingArea.setText(this.readingBook.getReadingContent());
@@ -94,6 +96,10 @@ public class Reading2Activity extends AppCompatActivity implements View.OnClickL
         this.btnNextPage.setOnClickListener(this);
         this.btnRefresh.setOnClickListener(this);
         this.btnStop.setOnClickListener(this);
+
+        super.setTitle(this.book.getBookName());
+        ActionBar actionBar = super.getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

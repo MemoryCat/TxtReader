@@ -1,16 +1,13 @@
 package com.memorycat.app.txtreader.file;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,49 +15,42 @@ import android.widget.Toast;
 
 import com.memorycat.app.txtreader.R;
 import com.memorycat.app.txtreader.book.Book;
+import com.memorycat.app.txtreader.book.BookActivity;
 import com.memorycat.app.txtreader.book.BookSQLHelper;
 
 import java.io.File;
 import java.util.Date;
 
-/**
- * Created by xie on 2017/1/24.
- */
-
-@Deprecated
-public class FileDialogFragment extends DialogFragment implements View.OnClickListener, AdapterView.OnItemClickListener {
-    private static final String TAG = "FileDialogFragment";
-
+public class SelectFileActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+    private static final String TAG = "SelectFileActivity";
     private ListView listView;
     private Button buttonHome;
     private Button buttonBack;
     private File currentFile = null;
-    private EditText currentPath;
-
+    private TextView currentPath;
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_select_file);
 
-        LayoutInflater inflater = super.getActivity().getLayoutInflater();
 
-        View view = inflater.inflate(R.layout.fragment_file, null);
-        buttonHome = (Button) view.findViewById(R.id.fragmentfile_btnGoHome);
-        buttonBack = (Button) view.findViewById(R.id.fragmentfile_btnGoBack);
-        currentPath = (EditText) view.findViewById(R.id.fragmentfile_currentPath);
+        buttonHome = (Button) super.findViewById(R.id.asf_btnGoHome);
+        buttonBack = (Button) super.findViewById(R.id.asf_btnGoBack);
+        currentPath = (TextView) super.findViewById(R.id.asf_currentPath);
 
         buttonHome.setOnClickListener(this);
         buttonBack.setOnClickListener(this);
 
         changeCurrnetFile(Environment.getExternalStorageDirectory());
-        this.listView = (ListView) view.findViewById(R.id.fragmentfile_listViewFileList);
-        this.listView.setAdapter(new FileAdapter(super.getActivity(), this.currentFile));
+        this.listView = (ListView) super.findViewById(R.id.asf_listViewFileList);
+        this.listView.setAdapter(new FileAdapter(this, this.currentFile));
         this.listView.setOnItemClickListener(this);
 
+        super.setTitle("请选择txt文件添加到书库：");
+        ActionBar actionBar = super.getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("请选择TXT文件");
-        builder.setView(view);
-        return builder.create();
     }
 
     private void changeCurrnetFile(File file) {
@@ -71,17 +61,17 @@ public class FileDialogFragment extends DialogFragment implements View.OnClickLi
     @Override
     public void onClick(View view) {
         Log.d(TAG, "onClick() called with: view = [" + view + "]");
-        if (view.getId() == R.id.fragmentfile_btnGoHome) {
+        if (view.getId() == R.id.asf_btnGoHome) {
 
             changeCurrnetFile(Environment.getExternalStorageDirectory());
-            this.listView.setAdapter(new FileAdapter(super.getActivity(), this.currentFile));
-        } else if (view.getId() == R.id.fragmentfile_btnGoBack) {
+            this.listView.setAdapter(new FileAdapter(this, this.currentFile));
+        } else if (view.getId() == R.id.asf_btnGoBack) {
             File parentFile = this.currentFile.getParentFile();
             if (parentFile != null) {
                 changeCurrnetFile(parentFile);
-                this.listView.setAdapter(new FileAdapter(super.getActivity(), this.currentFile));
+                this.listView.setAdapter(new FileAdapter(this, this.currentFile));
             } else {
-                Toast.makeText(super.getActivity(), "已经是最顶层目录了，没有上一级目录了", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "已经是最顶层目录了，没有上一级目录了", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -105,17 +95,19 @@ public class FileDialogFragment extends DialogFragment implements View.OnClickLi
             book.setLastReadDate(book.getAddDate());
 //            book.setBookContent(FileUtil.loadFileToString(file));
             book.setBookContent("");
-            BookSQLHelper bookSQLHelper = new BookSQLHelper(super.getActivity());
+            BookSQLHelper bookSQLHelper = new BookSQLHelper(this);
             bookSQLHelper.add(book);
 
-            Toast.makeText(super.getActivity(), "已添加到书架：" + file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "已添加到书架：" + file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
             String s = FileUtil.loadFileToString(file);
-            Log.d(TAG, "onItemClick: "+s);
+            Log.d(TAG, "onItemClick: " + s);
+            super.setResult(BookActivity.REQUEST_CODE_ADDBOOK);
+            super.finish();
 
         } else {
 
             changeCurrnetFile(file);
-            this.listView.setAdapter(new FileAdapter(super.getActivity(), this.currentFile));
+            this.listView.setAdapter(new FileAdapter(this, this.currentFile));
         }
     }
 }

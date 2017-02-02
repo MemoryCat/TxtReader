@@ -20,6 +20,11 @@ import java.text.SimpleDateFormat;
 
 public class BookCursorAdapter extends CursorAdapter {
 
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        return super.getView(position, convertView, parent);
+
+    }
 
     private final static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private LayoutInflater layoutInflater;

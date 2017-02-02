@@ -8,7 +8,7 @@ import java.util.Date;
  */
 
 public class Book implements Serializable {
-    private Long id;
+    private int id;
     private String bookName;
     private String bookContent;
     private String author;
@@ -31,40 +31,6 @@ public class Book implements Serializable {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Book book = (Book) o;
-
-        if (positionPointer != book.positionPointer) return false;
-        if (id != null ? !id.equals(book.id) : book.id != null) return false;
-        if (bookName != null ? !bookName.equals(book.bookName) : book.bookName != null)
-            return false;
-        if (bookContent != null ? !bookContent.equals(book.bookContent) : book.bookContent != null)
-            return false;
-        if (author != null ? !author.equals(book.author) : book.author != null) return false;
-        if (addDate != null ? !addDate.equals(book.addDate) : book.addDate != null) return false;
-        if (filePath != null ? !filePath.equals(book.filePath) : book.filePath != null)
-            return false;
-        return lastReadDate != null ? lastReadDate.equals(book.lastReadDate) : book.lastReadDate == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (bookName != null ? bookName.hashCode() : 0);
-        result = 31 * result + (bookContent != null ? bookContent.hashCode() : 0);
-        result = 31 * result + (author != null ? author.hashCode() : 0);
-        result = 31 * result + (addDate != null ? addDate.hashCode() : 0);
-        result = 31 * result + (int) (positionPointer ^ (positionPointer >>> 32));
-        result = 31 * result + (filePath != null ? filePath.hashCode() : 0);
-        result = 31 * result + (lastReadDate != null ? lastReadDate.hashCode() : 0);
-        return result;
-    }
 
     public String getBookName() {
         return bookName;
@@ -82,12 +48,12 @@ public class Book implements Serializable {
         this.lastReadDate = lastReadDate;
     }
 
-    public Long getId() {
+    public int getId() {
 
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -131,4 +97,39 @@ public class Book implements Serializable {
         this.filePath = filePath;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Book book = (Book) o;
+
+        if (id != book.id) return false;
+        if (positionPointer != book.positionPointer) return false;
+        if (bookName != null ? !bookName.equals(book.bookName) : book.bookName != null)
+            return false;
+        if (bookContent != null ? !bookContent.equals(book.bookContent) : book.bookContent != null)
+            return false;
+        if (author != null ? !author.equals(book.author) : book.author != null) return false;
+        if (addDate != null ? !addDate.equals(book.addDate) : book.addDate != null) return false;
+        if (filePath != null ? !filePath.equals(book.filePath) : book.filePath != null)
+            return false;
+        return lastReadDate != null ? lastReadDate.equals(book.lastReadDate) : book.lastReadDate == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (bookName != null ? bookName.hashCode() : 0);
+        result = 31 * result + (bookContent != null ? bookContent.hashCode() : 0);
+        result = 31 * result + (author != null ? author.hashCode() : 0);
+        result = 31 * result + (addDate != null ? addDate.hashCode() : 0);
+        result = 31 * result + positionPointer;
+        result = 31 * result + (filePath != null ? filePath.hashCode() : 0);
+        result = 31 * result + (lastReadDate != null ? lastReadDate.hashCode() : 0);
+        return result;
+    }
 }
