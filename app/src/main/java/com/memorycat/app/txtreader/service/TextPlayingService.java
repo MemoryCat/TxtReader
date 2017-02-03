@@ -50,7 +50,9 @@ public class TextPlayingService extends Service implements  TextPlayCompletedLis
 
     public void stopPlay() {
         playingText = false;
-        this.textSpeaker.stop();
+        if(this.textSpeaker!=null){
+            this.textSpeaker.stop();
+        }
     }
 
     @Override

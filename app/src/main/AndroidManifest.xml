@@ -30,12 +30,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/png_book_app"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat">
         <activity android:name=".reading.ReadingActivity" />
-        <activity android:name=".book.BookActivity">
+        <activity
+            android:name=".book.BookActivity"
+            android:icon="@drawable/png_book_app">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -57,6 +59,13 @@
 
         <activity
             android:name=".file.SelectFileActivity"
+            android:parentActivityName=".book.BookActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".book.BookActivity" />
+        </activity>
+        <activity
+            android:name=".book.EditBookActivity"
             android:parentActivityName=".book.BookActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
