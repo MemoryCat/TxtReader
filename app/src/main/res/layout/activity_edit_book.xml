@@ -1,13 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_edit_book"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.memorycat.app.txtreader.book.EditBookActivity">
+    android:orientation="vertical">
 
-</RelativeLayout>
+    <GridLayout
+        android:id="@+id/activity_edit_book"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="7"
+        tools:context="com.memorycat.app.txtreader.book.EditBookActivity">
+        <!--private String bookName;-->
+        <!--private String bookContent;-->
+        <!--private String author;-->
+        <!--private Date addDate;-->
+        <!--private int positionPointer;//阅读指针，阅读到哪个位置了？-->
+        <!--private String filePath;-->
+        <!--private Date lastReadDate;-->
+
+        <TextView android:text="书本名称：" />
+
+        <EditText
+            android:id="@+id/aeb_edittext_bookName"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill" />
+
+        <TextView android:text="书本作者：" />
+
+        <EditText
+
+            android:id="@+id/aeb_edittext_author"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill" />
+
+        <TextView android:text="文件字数：" />
+        <TextView android:id="@+id/aeb_textview_fileLength" android:text="0" />
+        <TextView android:text="已读字数：" />
+
+        <EditText
+
+            android:id="@+id/aeb_edittext_readProgress"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill"
+            android:inputType="number"
+            android:selectAllOnFocus="false"
+            android:singleLine="true" />
+
+        <TextView android:text="文件位置：" />
+
+        <EditText
+
+            android:id="@+id/aeb_edittext_filePath"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill" />
+
+        <TextView android:text="添加时间：" />
+
+        <EditText
+
+            android:id="@+id/aeb_edittext_addDate"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill"
+            android:inputType="datetime" />
+
+        <TextView android:text="最后阅读：" />
+
+        <EditText
+
+            android:id="@+id/aeb_edittext_lastReadDate"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill"
+            android:inputType="datetime" />
+    </GridLayout>
+
+    <Button
+        android:id="@+id/aeb_btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="保存" />
+</LinearLayout>

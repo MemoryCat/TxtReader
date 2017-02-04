@@ -10,6 +10,7 @@ import android.util.Log;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -115,6 +116,7 @@ public class BookSQLHelper extends SQLiteOpenHelper implements Serializable {
         SQLiteDatabase writableDatabase = super.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("positionPointer", progress);
+        contentValues.put("lastReadDate",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         writableDatabase.update(TABLE_NAME, contentValues, " _id =? ", new String[]{"" + bookId});
         writableDatabase.close();
     }
@@ -123,5 +125,21 @@ public class BookSQLHelper extends SQLiteOpenHelper implements Serializable {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         Log.d(TAG, "onUpgrade() called with: sqLiteDatabase = [" + sqLiteDatabase + "], oldVersion = [" + oldVersion + "], newVersion = [" + newVersion + "]");
+    }
+
+    public void updateBook(Book book){
+        SQLiteDatabase writableDatabase = super.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+//        contentValues.put("bookContent", book.getBookContent());
+        contentValues.put("bookName", book.getBookName());
+        contentValues.put("author", book.getAuthor());
+        contentValues.put("addDate", simpleDateFormat.format(book.getAddDate()));
+        contentValues.put("positionPointer", book.getPositionPointer());
+        contentValues.put("filePath", book.getFilePath());
+        contentValues.put("lastReadDate", simpleDateFormat.format(book.getLastReadDate()));
+
+        writableDatabase.update(TABLE_NAME,contentValues," _id = ? ",new String[]{""+book.getId()});
+        writableDatabase.close();
     }
 }

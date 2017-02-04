@@ -3,15 +3,17 @@ package com.memorycat.app.txtreader.book;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.memorycat.app.txtreader.R;
+import com.memorycat.app.txtreader.file.FileUtil;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 /**
@@ -56,12 +58,17 @@ public class BookCursorAdapter extends CursorAdapter {
         textViewLastReadDate.setText("最后阅读:" + simpleDateFormat.format(book.getLastReadDate()));
         TextView textViewPosition = (TextView) view.findViewById(R.id.fragmentbook_textViewPosition);
         File file = new File(book.getFilePath());
-        long position = 0L;
+        String s = FileUtil.loadFileToString(file);
+        float position = 0;
+        String p="0";
         try {
-            position = (book.getPositionPointer() / file.length() * 100);
+
+            position = ( (float)book.getPositionPointer() / s.length()) * 100;
+            DecimalFormat decimalFormat=new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+            p=decimalFormat.format(position);//format 返回的是字符串
         } catch (Exception e) {
             e.printStackTrace();
         }
-        textViewPosition.setText("   大小:"+file.length()+"   进度:" + position + "%");
+        textViewPosition.setText("   进度:" + p+ "%   字数:"+book.getPositionPointer()+"/"+ s.length());
     }
 }

@@ -18,6 +18,8 @@ import com.memorycat.app.txtreader.R;
 import com.memorycat.app.txtreader.file.SelectFileActivity;
 import com.memorycat.app.txtreader.reading.Reading2Activity;
 
+import java.io.File;
+
 public class BookActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     public static final int REQUEST_CODE_ADDBOOK = 10001;
     private static final String TAG = "BookActivity";
@@ -47,11 +49,6 @@ public class BookActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        this.bookCursorAdapter.notifyDataSetChanged();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -59,9 +56,9 @@ public class BookActivity extends AppCompatActivity implements AdapterView.OnIte
         Log.d(TAG, "onActivityResult() called with: requestCode = [" + requestCode + "], resultCode = [" + resultCode + "], data = [" + data + "]");
         switch (requestCode) {
             case REQUEST_CODE_ADDBOOK:
-                this.setBookList();
                 break;
         }
+        this.setBookList();
     }
 
 
@@ -77,6 +74,12 @@ public class BookActivity extends AppCompatActivity implements AdapterView.OnIte
     private void startReadingActivity(View view) {
         Book book = (Book) view.getTag();
         Log.d(TAG, "onItemClick: " + book);
+        File file = new File(book.getFilePath());
+        if (file.exists() == false) {
+            Toast.makeText(this, "无法阅读：文件不存在！" + book.getFilePath(), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
 //        book.setBookContent(FileUtil.loadFileToString(new File(book.getFilePath())));
         Intent intent = new Intent(this, Reading2Activity.class);
         Bundle bundle = new Bundle();
@@ -151,7 +154,7 @@ public class BookActivity extends AppCompatActivity implements AdapterView.OnIte
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("book", book);
                         intent.putExtras(bundle);
-                        BookActivity.super.startActivity(intent);
+                        BookActivity.super.startActivityForResult(intent, BookActivity.REQUEST_CODE_ADDBOOK);
                         break;
                 }
                 mode.finish();

@@ -42,7 +42,11 @@ public class ReadingBook implements Serializable, Reading {
         }
         this.book.setPositionPointer(newPositionPointer);
         int endIndex=newPositionPointer+pageSize>this.book.getBookContent().length()?this.book.getBookContent().length():newPositionPointer+this.pageSize;
-        this.setReadingContent(this.book.getBookContent().substring(newPositionPointer, endIndex));
+        try {
+            this.setReadingContent(this.book.getBookContent().substring(newPositionPointer, endIndex));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         //保存阅读进度指针
         if(this.bookSQLHelper!=null){
             this.bookSQLHelper.updateReadBookProgress(this.book.getId(),newPositionPointer);
@@ -62,8 +66,12 @@ public class ReadingBook implements Serializable, Reading {
 
         this.book.setPositionPointer(newPositionPointer);
         int endIndex=newPositionPointer<=0?0:newPositionPointer+this.pageSize;
-        this.setReadingContent(this.book.getBookContent().substring(newPositionPointer,endIndex));
-        //保存阅读进度指针
+        try {
+            this.setReadingContent(this.book.getBookContent().substring(newPositionPointer, endIndex));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+            //保存阅读进度指针
         if(this.bookSQLHelper!=null){
             this.bookSQLHelper.updateReadBookProgress(this.book.getId(),newPositionPointer);
         }
