@@ -36,7 +36,13 @@
             android:layout_gravity="fill" />
 
         <TextView android:text="文件字数：" />
-        <TextView android:id="@+id/aeb_textview_fileLength" android:text="0" />
+
+        <TextView
+            android:id="@+id/aeb_textview_fileLength"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill"
+            android:text="0" />
+
         <TextView android:text="已读字数：" />
 
         <EditText

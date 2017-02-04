@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="开始播放文字"
+        android:id="@+id/menu_item_reading_activity_start_play"
+        android:showAsAction="always|withText" />
+    <item android:title="停止播放文字"
+        android:id="@+id/menu_item_reading_activity_stop_play" />
+    <item android:title="阅读设置"
+        android:id="@+id/menu_item_reading_activity_reading_settings" />
+    <item android:title="语音播放设置"
+        android:id="@+id/menu_item_reading_activity_playing_settings" />
+    <item android:title="帮助"
+        android:id="@+id/menu_item_reading_activity_help" />
+</menu>

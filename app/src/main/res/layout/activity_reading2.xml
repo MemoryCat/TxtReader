@@ -11,37 +11,7 @@
     android:orientation="vertical"
     tools:context="com.memorycat.app.txtreader.reading.Reading2Activity">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/a2_btn_play"
-            android:text="播放"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/a2_btn_stop"
-            android:text="停止"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/a2_btn_previousPage"
-            android:text="上一页"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/a2_btn_nextPage"
-            android:text="下一页"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/a2_btn_refresh"
-            android:text="刷新页面"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
     <TextView
         android:id="@+id/ra2_tw_readingArea"
         android:layout_width="match_parent"
